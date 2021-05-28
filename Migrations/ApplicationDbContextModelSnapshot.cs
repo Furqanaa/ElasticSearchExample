@@ -29,14 +29,20 @@ namespace BooksPlant.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("text");
 
-                    b.Property<string>("CoverImage")
+                    b.Property<string>("CoverImagePath")
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<string>("FileName")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("StoragePath")
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .HasColumnType("text");

@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BooksPlant.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210523125343_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210528160918_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,14 +31,20 @@ namespace BooksPlant.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("text");
 
-                    b.Property<string>("CoverImage")
+                    b.Property<string>("CoverImagePath")
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<string>("FileName")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("StoragePath")
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .HasColumnType("text");

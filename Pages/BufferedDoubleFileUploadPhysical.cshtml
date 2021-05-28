@@ -1,0 +1,77 @@
+﻿@page
+@model BufferedDoubleFileUploadPhysicalModel
+@{
+    ViewData["Title"] = "Books | Upload";
+}
+
+<h1>Upload the book pdf file along with it's cover image and it's metadata</h1>
+
+<p>The following form's page handler saves the files to disk</p>
+
+<form enctype="multipart/form-data" method="post">
+    <div class="row">
+        <div class="col-md-4">
+            <label asp-for="UploadBookForm.Title">Title</label>
+            <input type="text" asp-for="UploadBookForm.Title" class="form-control" placeholder="Write down the book title" id="UploadBookForm.Title" name="UploadBookForm.Title" value="">
+            <span asp-validation-for="UploadBookForm.Title"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="UploadBookForm.Author">Author</label>
+            <input type="text" asp-for="UploadBookForm.Author" class="form-control" placeholder="Write down author's full name" id="UploadBookForm.Author" name="UploadBookForm.Author">
+            <span asp-validation-for="UploadBookForm.Author"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="UploadBookForm.IssueDate">IssueDate</label>
+            <input type="text" asp-for="UploadBookForm.IssueDate" class="form-control datepicker" placeholder="Pick a date" id="UploadBookForm.IssueDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" name="UploadBookForm.IssueDate">
+            <span asp-validation-for="UploadBookForm.IssueDate"></span>
+        </div>
+
+    </div>
+    <div class="row mt-3">
+        <div class="col form-group">
+            <label asp-for="UploadBookForm.Description">Description</label>
+            <textarea asp-for="UploadBookForm.Description" class="form-control" id="UploadBookForm.Description" placeholder="Keep it short and catchy..." name="UploadBookForm.Description" rows="3"></textarea>
+            <span asp-validation-for="UploadBookForm.Description"></span>
+        </div>
+    </div>
+    <div class="row">
+        <dl class="col-md-4">
+            <dt>
+                <label asp-for="UploadBookForm.PdfFile"></label>
+            </dt>
+            <dd>
+                <input asp-for="UploadBookForm.PdfFile" type="file" />
+                <span asp-validation-for="UploadBookForm.PdfFile"></span>
+            </dd>
+        </dl>
+        <dl class="col-md-4">
+            <dt>
+                <label asp-for="UploadBookForm.ImageFile"></label>
+            </dt>
+            <dd>
+                <input asp-for="UploadBookForm.ImageFile" type="file" />
+                <span asp-validation-for="UploadBookForm.ImageFile"></span>
+            </dd>
+        </dl>
+    </div>
+
+    <input asp-page-handler="Upload" class="btn btn-primary" type="submit" value="Upload" />
+</form>
+
+<p class="result">
+    @Model.Result
+</p>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+        });
+    </script>
+}

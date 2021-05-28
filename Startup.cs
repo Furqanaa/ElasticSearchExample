@@ -29,6 +29,11 @@ namespace BooksPlant
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationDbContext>(options =>
+              options.UseNpgsql(
+                  Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
             services.AddRazorPages(options =>
             {
                 options.Conventions
@@ -40,6 +45,7 @@ namespace BooksPlant
                            model.Filters.Add(
                                new DisableFormValueModelBindingAttribute());
                        });
+
             });
             // To list physical files from a path provided by configuration:
             var physicalProvider = new PhysicalFileProvider2(Configuration.GetValue<string>("StoredFilesPath"));
@@ -49,10 +55,7 @@ namespace BooksPlant
 
             services.AddSingleton<IFileProvider>(physicalProvider);
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-              options.UseNpgsql(
-                  Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            
             services.Configure<FormOptions>(options =>
             {
                 // Set the limit to 256 MB

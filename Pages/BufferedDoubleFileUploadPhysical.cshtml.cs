@@ -10,6 +10,7 @@ using BooksPlant.Utilities;
 using BooksPlant.Models;
 using System;
 using BooksPlant.Data;
+using Nest;
 
 namespace BooksPlant.Pages
 {
@@ -19,13 +20,16 @@ namespace BooksPlant.Pages
         private readonly string[] _permittedExtensions = { ".txt" , ".pdf", ".png", ".jpg"};
         private readonly string _targetFilePath;
         private readonly ApplicationDbContext _context;
-        public BufferedDoubleFileUploadPhysicalModel(IConfiguration config, ApplicationDbContext context)
+        private readonly IElasticClient _elasticClient;
+
+        public BufferedDoubleFileUploadPhysicalModel(IConfiguration config, ApplicationDbContext context, IElasticClient elasticClient)
         {
             _fileSizeLimit = config.GetValue<long>("FileSizeLimit");
 
             // To save physical files to a path provided by configuration:
             _targetFilePath = config.GetValue<string>("StoredFilesPath");
             _context = context;
+            _elasticClient = elasticClient;
 
             // To save physical files to the temporary files folder, use:
             //_targetFilePath = Path.GetTempPath();
@@ -118,6 +122,10 @@ namespace BooksPlant.Pages
             // Use DB context here to save the fucking book
             _context.Add(book);
             _context.SaveChanges();
+
+            // Elastic search
+            _elasticClient.Index<Book>(book, x => x.Index("books"));
+
             return RedirectToPage("./Index");
         }
     }

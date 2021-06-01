@@ -1,10 +1,94 @@
 ﻿@page
 @model IndexModel
+
 @{
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row ml-3">
+    <div class="col-md-9">
+        <form action="" method="get">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search For Capital..." name="term" value="@Model.term"
+                       autocomplete="off" autofocus="autofocus">
+                <div class="ml-2 input-group-append">
+                    <button class="btn btn-light" type="submit">
+                        <i class=""></i> Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-3">
+        <a asp-page="/BufferedDoubleFileUploadPhysical" class="btn btn-primary">Upload New Book</a>
+    </div>
 </div>
+
+
+
+@if (Model.HasSearch)
+{
+    var results = Model.Search.Documents.Select(x => x).ToList();
+
+    @if (!results.Any())
+    {
+        <div class="jumbotron">
+            <h1 class="display-4">You Didn't Find Anything For "@Model.term"</h1>
+            <p class="lead">Keep looking, you may find what you're search for!</p>
+        </div>
+    }
+    else
+    {
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="row">
+                        @foreach (var result in results)
+                        {
+                            <div class="col-md-4">
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-body">
+                                        <a href="#" id="@result.StoragePath" class="pdfLink" onclick="openPdf(this.id)" title="click to view or download">
+                                            <img class="card-img-top" src="https://localhost:44341/@(result.CoverImagePath)" />
+                                        </a>
+                                        
+
+                                        <hr />
+                                        <h5 class="card-title">@result.Title</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">@result.Author</h6>
+                                        <p class="card-text">
+                                            @result.Description.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="jumbotron">
+        <h1 class="display-4">Hello, world!</h1>
+        <p class="lead">Use the search bar to find a capital city of the world.</p>
+        <hr class="my-4">
+        <p>This sample uses Elasticsearch, ASP.NET Core Razor Pages, and MapQuest Static Map API to bring you this experience.</p>
+        <a class="btn btn-primary btn-lg" href="https://khalidabuhakmeh.com" role="button">Learn more</a>
+    </div>
+}
+
+@section Scripts {
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        function openPdf(path){
+            window.open("https://localhost:44341/"+path, '_blank');
+        }
+
+    </script>
+}

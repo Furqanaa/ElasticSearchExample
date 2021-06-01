@@ -14,7 +14,7 @@ namespace BooksPlant.Models
         public string Author { get; set; }
         public string CoverImagePath { get; set; }
         public string StoragePath { get; set; }
-        public string FileName { get; set; }
+        public string FileName { get; set; } 
         public DateTime PublishDate { get; set; }
     }
 }

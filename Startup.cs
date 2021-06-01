@@ -14,9 +14,10 @@ using System.Threading.Tasks;
 using BooksPlant.Filters;
 using BooksPlant.Utilities;
 using Microsoft.Extensions.FileProviders;
-
+using Nest;
+using System.IO;
 namespace BooksPlant
-{
+ {
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -62,6 +63,14 @@ namespace BooksPlant
                 options.MultipartBodyLengthLimit = 268435456;
             });
 
+            // Elasticsearch configs
+            var node = new Uri("http://localhost:9200/");
+            var settings = new ConnectionSettings(node).DefaultIndex("books");
+            settings.ThrowExceptions(alwaysThrow: true); // I like exceptions
+            settings.PrettyJson(); // Good for DEBUG
+
+            services.AddSingleton<IElasticClient>(new ElasticClient(settings)); 
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,6 +97,17 @@ namespace BooksPlant
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+            });
+            app.UseStaticFiles(); // For the wwwroot folder.
+
+            // using Microsoft.Extensions.FileProviders;
+            // using System.IO;
+            app.UseFileServer(new FileServerOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.ContentRootPath, "StaticFiles")),
+                RequestPath = "/StaticFiles",
+                EnableDirectoryBrowsing = true
             });
         }
     }

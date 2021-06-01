@@ -83,4 +83,6 @@ D:\Work\Earthlink\BookStore\booksplant\obj\Debug\net5.0\BooksPlant.dll
 D:\Work\Earthlink\BookStore\booksplant\obj\Debug\net5.0\ref\BooksPlant.dll
 D:\Work\Earthlink\BookStore\booksplant\obj\Debug\net5.0\BooksPlant.pdb
 D:\Work\Earthlink\BookStore\booksplant\obj\Debug\net5.0\BooksPlant.genruntimeconfig.cache
+D:\Work\Earthlink\BookStore\BooksPlant\bin\Debug\net5.0\Elasticsearch.Net.dll
+D:\Work\Earthlink\BookStore\BooksPlant\bin\Debug\net5.0\Nest.dll
 D:\Work\Earthlink\BookStore\BooksPlant\obj\Debug\net5.0\BooksPlant.csprojAssemblyReference.cache
